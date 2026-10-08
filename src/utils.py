@@ -6,6 +6,7 @@ and hidden password
 import os
 import getpass
 
+
 def get_hidden_password(prompt: str = "Enter password: "):
     """Prompts the user for a password without echoing characters to the terminal."""
 

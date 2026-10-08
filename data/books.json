@@ -3,7 +3,7 @@
         "title": "Clean Code",
         "author": "Robert C.Martin",
         "isbn": "9780132350884",
-        "is_available": false
+        "is_available": true
     },
     {
         "title": "The Pragmatic Programmer",
@@ -15,6 +15,18 @@
         "title": "Design Patterns",
         "author": "Erich Gamma",
         "isbn": "9780201633610",
+        "is_available": true
+    },
+    {
+        "title": "Abou",
+        "author": "Einstein",
+        "isbn": "3453",
+        "is_available": true
+    },
+    {
+        "title": "Clean Code",
+        "author": "Robert",
+        "isbn": "978013235",
         "is_available": true
     }
 ]

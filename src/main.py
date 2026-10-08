@@ -34,19 +34,18 @@ def main():
                 password = get_hidden_password("Enter the administrator password : ")
                 user_mgr.save_admin(email, password)
                 print("Administrator saved successfully !")
-                input("\nPress Enter to continue...") # Pause 1
 
             # Admin Login
             display_header("ADMINISTRATOR LOGIN")
             password = get_hidden_password("Enter your password : ")
             if user_mgr.verify_admin(password):
+                
                 print("Logging in successfully !")
                 current_user_email = user_mgr.load_admin()["email"]
                 role = "admin"
-                input("\nPress Enter to access dashboard...")# Pause 2
             else:
                 print("Error : Incorrect password.")
-                input("\nPress Enter to retry...") # Pause 3
+                input("\nPress Enter to retry...")
                 continue
 
         elif role_choice == "2":
@@ -68,13 +67,14 @@ def main():
                 input("\nPress Enter to continue...")  # Pause 5
 
             elif sub_choice == "2":
+                display_header("USER LOGIN")
                 users = user_mgr.list_all_users()
                 if not users:
                     print("Any account existed. Please create one.")
                     input("\nPress Enter to continue...")  #Pause 6
                     continue
 
-                display_header("USER LOGIN")
+                
                 email_choice = get_non_empty_input("Enter your email to log in : ")
                 # Check if the email exists in records
                 exists = any(u["email"] == email_choice for u in users)
@@ -88,7 +88,7 @@ def main():
                     print("You logged in successfully !")
                     current_user_email = email_choice
                     role = "user"
-                    input("\nPress Enter to access your dashboard...")  #Pause
+                    
                 else:
                     print("Incorrect password.")
                     input("\nPress Enter to retry...")  #Pause
@@ -100,7 +100,7 @@ def main():
             
         elif role_choice == "3":
             display_header("GOODBYE")
-            print("Thank you for using the Library Management System. Goodbye!")
+            print("Thank you for using the Library Management System. Goodbye!\n\n\n")
             break
 
         else:
@@ -147,27 +147,45 @@ def main():
 
             elif choice == "3":
                 display_header("RETURN A BOOK")
+                library.list_books()
+                print("-"*50)
                 isbn = get_non_empty_input("ISBN of book to return : ")
                 library.return_book(isbn)
+                print("-" * 50)
+                print("Updated Catalog:")               # <--- 2. Show catalog again to confirm return
+                library.list_books()
                 input("\nPress Enter to continue...") # Pause 14
 
             elif choice == "4":
                 display_header("UPDATE MY ACCOUNT PROFILE")
+                print("-" * 50)
                 new_email = get_non_empty_input("New emil : ")
                 new_password = get_hidden_password("New password : ")
                 if confirm_action("Do you confirm the modification of your account ?"):
-                    user_mgr.update_credentials(role, current_user_email, new_email, new_password)
+                    success =user_mgr.update_credentials(role, current_user_email, new_email, new_password)
                     current_user_email = new_email
+                    if success:
+                        print("-" * 50)
+                        print(" Account updated successfully!")
+                        print(f" New Email    : {new_email}")
+                        print(f" New Password : {new_password}")
+                        print("-" * 50)
+        
                 input("\nPress Enter to continue...") # Pause 15
 
             elif choice == "5" and role == "admin":
                 display_header("ADMIN: ADD A NEW BOOK")
+                library.list_books()                  # <--- 1. Afficher les livres avant
+                print("-" * 50)
                 title = get_non_empty_input("Title : ")
                 author = get_non_empty_input("Author : ")
                 isbn = get_non_empty_input("ISBN : ")
                 library.add_book(title, author, isbn)
-                input("\nPress Enter to continue...") # Pause 16
-
+                print("-" * 50)
+                print("Updated Catalog:")               # <--- 2. Réafficher le catalogue mis à jour
+                library.list_books()
+                input("\nPress Enter to continue...")
+            
             elif choice == "6" and role == "admin":
                 display_header("ADMIN: UPDATE A BOOK")
                 library.list_books()
@@ -177,6 +195,9 @@ def main():
                 new_author = get_non_empty_input("New author : ")
                 if confirm_action("Are you modifying this book ? "):
                     library.update_book(isbn, new_title, new_author)
+                print("-" * 50)
+                print("Updated Catalog:")               # <--- 2. Réafficher le catalogue mis à jour
+                library.list_books()
                 input("\nPress Enter to continue...") # Pause 17
 
             elif choice == "7" and role == "admin":
@@ -186,6 +207,9 @@ def main():
                 isbn = get_non_empty_input("ISBN of book to delete : ")
                 if confirm_action("Are you deleting definitively this book?"):
                     library.delete_book(isbn)
+                print("-" * 50)
+                print("Updated Catalog:")               # <--- 2. Réafficher le catalogue mis à jour
+                library.list_books()
                 input("\nPress Enter to continue...") # Pause 18
 
             elif choice == "8" and role == "admin":
@@ -202,12 +226,10 @@ def main():
 
             elif (choice == "9" and role == "admin") or (choice == "5" and role == "user"):
                 if confirm_action("Do you want to disconnect (log out) ?"):
-                    print("Logging out successfully (disconnection).Returning to login screen.")
-                    input("\nPress Enter to continue...") # Pause 20
                     break # Sort du menu pour revenir au choix du rôle principal
             else:
                 print("Error : Invalid choice or unauthorized action for your profile.")
-                input("\nPress Enter to continue...") # Pause 21
+                
 if __name__ == "__main__":
     main()
 

@@ -8,6 +8,7 @@ import json
 import os
 from src.book import Book
 
+
 class Library:
     """Handles the catalog of books and persistence operations using books.json."""
 

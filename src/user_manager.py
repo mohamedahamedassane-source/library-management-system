@@ -1,7 +1,7 @@
 """
 Module: user_manager.py
 Description: Manages administrator and regular user accounts, authentication, 
-profile updates, and secure local JSON file persistence.
+profile updates, secure local JSON file persistence
 """
 
 import json
@@ -94,7 +94,7 @@ class UserManager:
                 if u["email"] == identifier:
                     u["email"] = new_email
                     u["password"] = new_password
-                    self.save_admin(users)
+                    self.save_users(users)
                     print("User information updated successfully.")
                     return True
         return False
